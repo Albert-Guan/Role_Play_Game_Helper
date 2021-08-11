@@ -20,12 +20,32 @@ def convert_str_to_datetime(time_str, current_date):
     return datetime.strptime(time_str+":00", "%Y-%m-%d %H:%M:%S")
 
 
-current_date = '2020-09-01'
+def expand_people_list(events_with_people_list):
+    return [[people, event[1], event[2], event[3]] for event in events for people in event[0]]
+
+
+current_date = '2020-02-25'
+dead_time = '18:00'
+dead_loc = ''
+
 events = [
-    ('P1', '12:45', '13:45', 'L1'),
-    ('P2', '11:30', '12:30', 'L2'),
-    ('P3', '23:00', '2020-09-02 00:50', 'L3')
+    [['Nv er'], '16:30', dead_time, 'Nv room'],
+    [['Jing Guan'], '8:00', dead_time, 'Jing Guan room'],
+    [['Feng'], '8:00', '16:00', 'Nice room'],
+    [['Feng'], '16:00', dead_time, 'Feng room'],
+    [['K'], '12:00', '13:50', 'K room'],
+    [['Ling mei'], '12:00', '13:00', '??'],
+    [['Liu'], '8:00', '12:00', 'Nice room'],
+    [['Liu'], '12:00', dead_time, 'Liu room'],
+    [['Long'], '8:00', '12:00', 'Nice room'],
+    [['Long'], '12:00', '13:00', '??'],
+    [['Long'], '13:00', '13:30', 'Long room'],
+    [['Long'], '13:30', '13:50', 'Nv room'],
+    [['Long','K'], '13:50', '14:00', 'Zou lang'],
+    [['Nv er'], '14:00', '16:30', 'Hua fang']
 ]
+
+expanded_events = expand_people_list(events);
 
 # convert time string representation with datetime
 events_with_datetime = [
@@ -33,8 +53,9 @@ events_with_datetime = [
      convert_str_to_datetime(event[1], current_date),
      convert_str_to_datetime(event[2], current_date),
      event[3])
-    for event in events
+    for event in expanded_events
 ]
+
 
 # calculate get all people and all locations
 total_people = list(dict.fromkeys(event[0] for event in events_with_datetime))
